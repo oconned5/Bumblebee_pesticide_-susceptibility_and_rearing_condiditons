@@ -1,0 +1,32 @@
+Experiment	"Which experiment is the data from, numbered 1 to 4, see materials and methods"
+Experimental_batch	"Which experimental batch did this bee undergo experimentation in. Due to logistical contrainst, some experiments were run in two batches, one after the other"
+Bee_ID	What number was this bee assigned. Unique. 
+Number	"Number of individuals assigned this ID. Typicall just one, but some baseline samples were frozen in bulk (i.e. 20 individuals from the colony frozen before the experiment to have a baseline reference)"
+Caste	"Which bumblebee case the individual bee was part of, either; worker, drone or queen. This experiment focuses on workers"
+Queen_source	"Where was the queen of the colony this individual is from sourced. Either commercially bred and purchased queens from Biobest or Koppert, or Wild queens "
+Developmental_conditions	Where did this individual develop? Was it laid and raised in either a 'natural' outdoors setting or in the laboratory
+Weeks_outdoors	"In experiments which tested the impact of environmental hardening, how many weeks was the colony kept outdoors"
+Colony_ID	The unique ID of every colony
+Treatment	"What treatment was this bee assigned to, i.e. which chemical or control treatment. The codes stand for the following: Experiment 1; DIM - the Dimethoate positive control group, RC - the commerically reared control group, RP - the  the commerically reared pesticide,  (Thiamethoxam) group, WC - the wild caught control group, WP - the wild caught pesticide (Thiamethoxam) treated group. Experiment 2; ARCON - the commerically reared control group, WCON - the wild caught control group, RAMI - the commercially reared Amistar treated group, WAMI - the wild caught Amistar treated group,  RCYN - the commerically reared cyantraniliprole treated group, WCYN - the wild caught cyantraniliprole treated group, RDIM - the commerically reared Dimethoate (positive control) treated group, WDIM - the wild caught  positive control (Dimethoate) group. Experiment 3; LBC - lab reared commercial bees control, LBT - Lab-reared commercial bees pesticide treated (Thiamethoxam), LBD - Lab-reared commercial bees positive control (Dimethoate), ODC - outdoor-reared commercial bees control, ODT - Outdoor-reared commercial bees pesticide treated (Thiamethoxam), ODD - Outdoor-reared commercial bees positive control (Dimethoate). Experiment 4; KC - Lab-reared  commercial bees control, KT - Lab-reared commercial bees thiamethoxam, KD - Lab-reared commercial bees dimethoate, WC - Lab-reared wild-genotype bees control, WT - Lab-reared wild-genotype bees thiamethoxam, WD - Lab-reared wild-genotype bees dimethoate"
+Lab_ID	"If this indivdiual needed its species confirmed by DNA barcoding, what ID number was the DNA extraction given in the molecular lab"
+NCBI_Genbank_acession_number	The unique identifier number of the COI sequence for this specimen on the NCBI Genbank database
+BLAST_date	Date run through NCBI BLAST for to confirm species DI
+First_BLAST_match_accession_number	The accession number of the sequence which was the number one result from the BLAST search on the NCBI Genbank database
+BLAST_match_percentage	Percentage match to the number one result from the BLAST search
+Species	"Which Bombus species it was. This experiment focuses on Bombus terrestris, but several species look like B. terrestris, so if there was any chance of that, the individual was DNA barcoded, and excluded from analyses if it was not B. terrestris"
+Location	Location collected from. NA if lab or commercial raised
+Lat_lon	Latitude and longitude of collection location
+Date_Queen_Collected	Date bee collected from wild or housed colony.
+Date_Experiment_Start	Date the experiment was started
+Bee_weight_g	The bee's weight in grams at the start of the experiment
+Time_in_experiment_hours	Time that the individual spent in the experiment (up to 48 hours). If an individual died it was removed
+Mortality	"Whether the individual died during the experiment, 0 for no, 1 for yes"
+Sucrose_consumed	Grams of sucrose consumed (start weight of syringe minus end weight (end = 48h or death))
+Sucrose_consumed_per_hour	Sucrose_Consumed divided by Time
+Dead_bee_weight_g	"Weight of bee after death (or end of experiment), in grams"
+Weight_change_g	"Change in weight from start of experiment to end (or death), in grams"
+Valid_mort_data	Whether valid data on mortality was collected
+Valid_sucrose_data	Whether valid data on sucrose consumption was collected
+Male	Was this bee male
+Valid_species	Was this bee known to be B. terrestris
+Notes	Any further notes
