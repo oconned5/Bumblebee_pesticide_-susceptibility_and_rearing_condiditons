@@ -615,14 +615,12 @@ ggsave("wild vs reared bt worker sucrose.pdf", l, width = 6, height = 8, dpi = 3
 # Wild-caught vs. lab-reared commercial worker bumble bees
 # Focal pesticides: Amistar and Cyantraniliprole
 # Positive control: Dimethoate
-# Additional DEL treatments are present in the consolidated dataset but are not
-# part of the paper-facing mixed-effects mortality model.
 #
 # Manuscript logic:
 #   1. Build the Experiment 2 analysis subset from the consolidated dataset
 #   2. Inspect survival curves for all filtered treatments
 #   3. Fit mixed-effects Cox proportional hazards models
-#   4. Remove DIM and DEL groups for the main manuscript-facing model
+#   4. Remove DIM groups for the main manuscript-facing model
 #   5. Compare a small set of candidate models and retain the simplest
 #      defensible model
 #   6. Run six a priori contrasts with Bonferroni correction
@@ -684,7 +682,7 @@ Guide2 <- subset(
 # reproducible and aligned with the original Experiment 2 workflow.
 Guide2$Treatment <- factor(
   Guide2$Treatment,
-  levels = c("ARCON", "RAMI", "RCYN", "WAMI", "WCYN", "WCON", "RDIM", "WDIM", "RDEL", "WDEL")
+  levels = c("ARCON", "RAMI", "RCYN", "WAMI", "WCYN", "WCON", "RDIM", "WDIM")
 )
 
 ###############################################################################
@@ -718,7 +716,6 @@ print(table(Guide2$Treatment, useNA = "ifany"))
 # These should align with the manuscript sample sizes for Experiment 2:
 # ARCON = 20, WCON = 23, RAMI = 25, WAMI = 23,
 # RCYN = 14, WCYN = 26, RDIM = 15, WDIM = 14.
-# DEL groups may also be present in the consolidated dataset but are excluded
 # from the paper-facing mixed-effects model.
 
 # Quick audit for missing core fields after filtering.
@@ -789,16 +786,15 @@ FM <- coxme(
 summary(FM)
 confint(FM)
 
-# DIM is a positive control and DEL was not retained in the manuscript-facing
-# Experiment 2 model. Both are removed for the inferential treatment model.
+# DIM is a positive control and was not retained in the manuscript-facing
+# Experiment 2 model due to consistent 100% mortality
 ddGuide <- droplevels(
   subset(
     GuideTer,
-    Treatment != "WDIM" & Treatment != "RDIM" &
-      Treatment != "WDEL" & Treatment != "RDEL"
+    Treatment != "WDIM" & Treatment != "RDIM"
   )
 )
-# dd = no DIM, no DEL
+# dd = no DIM
 
 ###############################################################################
 # 2F. Candidate model comparison
@@ -924,28 +920,27 @@ abline(h = 0, col = "red")
 ###############################################################################
 # 2I. Figure 2
 #
-# The publication-facing figure excludes DEL treatments but retains DIM so the
+# The publication-facing figure retains DIM so the
 # positive control remains visible. Significance letters are added manually to
 # match the attached manuscript figure.
 ###############################################################################
 
-noDelGuide <- droplevels(subset(GuideTer, Treatment != "WDEL" & Treatment != "RDEL"))
 
-noDelkm_trt_fit <- survfit(Surv(Time_in_experiment_hours, Mortality) ~ Treatment, data = noDelGuide)
+noDelkm_trt_fit <- survfit(Surv(Time_in_experiment_hours, Mortality) ~ Treatment, data = GuideTer)
 summary(noDelkm_trt_fit)
 
 # Quick checks before building the publication figure.
 ggsurvplot(noDelkm_trt_fit)
 
 # Explicit plotting order for the manuscript-facing figure.
-noDelGuide$Treatment <- factor(
-  noDelGuide$Treatment,
+GuideTer$Treatment <- factor(
+  GuideTer$Treatment,
   levels = c("ARCON", "RAMI", "RCYN", "RDIM", "WAMI", "WCON", "WCYN", "WDIM")
 )
 
 noDelkm_trt_fit <- survfit(
   Surv(Time_in_experiment_hours, Mortality) ~ Treatment,
-  data = noDelGuide
+  data = GuideTer
 )
 
 trt_cols_exp2 <- c(
@@ -961,7 +956,7 @@ trt_cols_exp2 <- c(
 
 b <- ggsurvplot(
   noDelkm_trt_fit,
-  data = noDelGuide,
+  data = GuideTer,
   size = 1.8,
   legend = "right",
   legend.labs = c(
