@@ -22,7 +22,7 @@
 #   C. Inspect survival patterns with Kaplan–Meier curves
 #   D. Run the manuscript-relevant inferential statistics
 #   E. Recreate the publication figure
-#   F. Explore supporting explanatory variables (e.g. weight, sucrose)
+#   F. Explore supporting explanatory variables where present (e.g. weight, sucrose)
 ###############################################################################
 
 
@@ -102,8 +102,8 @@ Guide$Mortality <- suppressWarnings(as.numeric(as.character(Guide$Mortality)))
 #   - Survival curves are used to visualise mortality over time.
 #   - Positive control is retained for plotting and context.
 #   - Positive control is excluded from inferential mortality comparisons.
-#   - A Cox model is attempted first, but the manuscript analysis uses
-#     chi-squared / Fisher tests because mortality is sparse or highly separated.
+#   - A Cox model is attempted, but the manuscript analysis uses
+#     chi-squared, then Fisher, tests because mortality is sparse or highly separated.
 ###############################################################################
 
 ###############################################################################
@@ -214,6 +214,7 @@ NoDIMtbl
 
 NoDIMcs <- chisq.test(NoDIMtbl)
 NoDIMcs
+
 # Global treatment effect is expected to be highly significant.
 
 # There are six pairwise comparisons in Experiment 1.
@@ -801,7 +802,6 @@ ddGuide <- droplevels(
 #
 # Multiple biologically plausible models are fitted to evaluate whether bee
 # weight and/or the random-effects structure materially improve the fit.
-# The original workflow retained ddM2 as the simplest defensible model.
 ###############################################################################
 
 ddFM <- coxme(
@@ -851,8 +851,9 @@ ddM0 <- coxme(
 )
 
 model.sel(ddFM, ddM1, ddM2, ddM3, ddM4, ddM5, ddM0)
-# No single model is a dominant winner. The original workflow proceeds with
-# ddM2 because it is the simplest model that still captures the main structure.
+# No single model is a dominant winner. Proceed with the simplest model with joint
+# lowest AICc
+# ddM2 because it is the simplest model with joint lowest AICc
 
 summary(ddM2)
 confint(ddM2)
@@ -1072,7 +1073,7 @@ ggsave(
 #   1. Filter the consolidated dataset to the Experiment 3 analysis subset
 #   2. Audit sample sizes and key variables after filtering
 #   3. Inspect survival curves over time
-#   4. Attempt a Cox model, but retain chi-squared / Fisher testing as the main
+#   4. Attempt a Cox model, but retain chi-squared, then Fisher, testing as the main
 #      manuscript-facing mortality analysis because mortality patterns are too
 #      sparse / separated for a stable proportional-hazards approach
 #   5. Recreate manuscript Figure 3 with manual significance lettering
@@ -1270,7 +1271,7 @@ LBTODTfisher_result <- fisher.test(LBTODTtbl)
 print(LBTODTfisher_result)
 # Fisher's test is significant, but we retain the chi-squared
 # interpretation for consistency with the main workflow, as the 
-# chi-square model di fit
+# chi-square model did fit
 
 # Summary of pairwise outputs retained for quick review against manuscript notes
 LBCLBTcs
@@ -1399,8 +1400,7 @@ ggsave("Experiment03_lab_into_wild_worker_mortality.png",
 ###############################################################################
 # 3H. Additional explanatory-factor checks: weight
 #
-# These analyses are retained from the original script because they address the
-# alternative explanation that mortality differences are primarily driven by
+# Explore the alternative explanation that mortality differences are primarily driven by
 # body size rather than treatment / rearing history.
 ###############################################################################
 
@@ -1428,7 +1428,7 @@ PesticideMortVSWeight3 <- glm(Bee_weight_g ~ as.factor(Mortality),
                               data = PesticideOnlyGuide3)
 summary(PesticideMortVSWeight3)
 confint(PesticideMortVSWeight3)
-# Non-significant.
+# Non-significant. In this case body weight is not significantly differenet between groups
 
 # Scatter plot of body weight vs survival status for the two pesticide-exposed
 # groups, retained as a visual check.
@@ -1581,8 +1581,8 @@ PH4 <- coxph(
 )
 summary(PH4)
 # Unlike Experiment 3, this model converges. The chi-squared workflow is still
-# retained because that is the original manuscript-facing analysis and improves
-# comparability across experiments.
+# retained because as that improves comparability between the reciprocal 
+# transplant experiments (Experiments 3 and 4).
 
 # Global treatment effect on overall mortality, excluding positive controls.
 NoDIMtbl4 <- table(NoDimGuide4$Treatment, NoDimGuide4$Mortality)
@@ -1651,8 +1651,8 @@ KTWTtbl <- make_pair_table_exp4(Guide4, "KT", "WT")
 KTWTtbl
 KTWTcs <- chisq.test(KTWTtbl)
 KTWTcs
-# Borderline at the raw p-value level, but not significant after the planned
-# Bonferroni-adjusted threshold.
+# Significant at the raw p-value level, but not significant after the 
+# Bonferroni-adjusted threshold (.
 
 # Compact summary block for quick inspection.
 WCWTcs
